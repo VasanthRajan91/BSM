@@ -12,7 +12,7 @@
 	<groupId>com.bcm</groupId>
 	<artifactId>bcm</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 	<name>bcm</name>
 	<description>BCM project</description>
 	<properties>
@@ -65,5 +65,9 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<modules>
+		<module>user</module>
+		<module>loan</module>
+		<module>discovery</module>
+	</modules>
 </project>
