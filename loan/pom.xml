@@ -8,11 +8,4 @@
   <artifactId>loan</artifactId>
   <name>loan</name>
   <description>loan details</description>
-  <dependencies>
-  	<dependency>
-  		<groupId>com.bcm</groupId>
-  		<artifactId>user</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  </dependencies>
 </project>

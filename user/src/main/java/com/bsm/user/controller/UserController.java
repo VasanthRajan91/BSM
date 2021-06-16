@@ -17,7 +17,7 @@ import com.bsm.user.service.RegistrationService;
 
 @RestController
 @CrossOrigin()
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
 	
 	@Autowired

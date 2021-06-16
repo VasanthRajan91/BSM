@@ -69,5 +69,6 @@
 		<module>user</module>
 		<module>loan</module>
 		<module>discovery</module>
+		<module>router</module>
 	</modules>
 </project>
