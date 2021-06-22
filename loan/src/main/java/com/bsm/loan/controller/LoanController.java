@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bsm.loan.model.Loan;
 import com.bsm.loan.service.LoanService;
+import com.bsm.user.model.ResponseData;
 
 @RestController
 @CrossOrigin
@@ -21,14 +22,20 @@ public class LoanController {
 	public LoanService loanService;
 	
 	@PostMapping(value = "/applyloan")
-	public String applyloan(@RequestBody Loan loan, HttpServletRequest request) {
+	public ResponseData applyloan(@RequestBody Loan loan, HttpServletRequest request) {
 		String loanID = null;
+		ResponseData resData = new ResponseData();
 		try {
 			String token = (String) request.getHeader("Token");
 			loanID = this.loanService.applyLoan(loan, token);
+			resData.setResponseCode("200");
+			resData.setReponseMsg("Applied Loan Successfully");
+			resData.setToken(loanID);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			resData.setResponseCode("404");
+			resData.setReponseMsg("Applied Loan Failed");
 		}
-		return loanID;
+		return resData;
 	}
 }

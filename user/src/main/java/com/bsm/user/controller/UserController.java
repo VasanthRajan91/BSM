@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bsm.user.model.Login;
 import com.bsm.user.model.Registration;
+import com.bsm.user.model.ResponseData;
 import com.bsm.user.service.RegistrationService;
 
 @RestController
@@ -29,27 +30,79 @@ public class UserController {
 	}
 	
 	@PostMapping("/registration")
-	public Registration createUser(@RequestBody Registration registration, HttpServletRequest request) {
+	public ResponseData createUser(@RequestBody Registration registration, HttpServletRequest request) {
 		Registration reg = new Registration();
+		ResponseData resData = new ResponseData();
 		try {
 			reg = this.registrationService.saveNewUser(registration);
+			if(reg != null && reg.getCustomerid().contains("R")) {
+				resData.setResponseCode("200");
+				resData.setReponseMsg("Registered Successfully");
+				resData.setRegistration(reg);
+			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			resData.setResponseCode("404");
+			resData.setReponseMsg("Registered Failed");
 		}
-		return reg;
+		return resData;
 	}
 
 	@PostMapping("/login")
-	public String login(@RequestBody Login login, HttpServletRequest request) {
+	public ResponseData login(@RequestBody Login login, HttpServletRequest request) {
 		String token = "0";
+		ResponseData resData = new ResponseData();
 		try {
 			if (login.getUsername() != null && login.getPassword() != null) {
 				token = this.registrationService.CheckUser(login);
+				resData.setResponseCode("200");
+				resData.setReponseMsg("Token Generated Successfully");
+				resData.setToken(token);
 			}
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			resData.setResponseCode("404");
+			resData.setReponseMsg("Token Generated Failed");
 		}
-		return token;
+		return resData;
+	}
+	
+	@PostMapping(value = "/accountDetails")
+	public ResponseData getAccountDetails(@RequestBody String token) {
+		Registration accountDetails = new Registration();
+		ResponseData resData = new ResponseData();
+		try {
+			accountDetails = this.registrationService.getAccountDetails(token);
+			if(accountDetails != null) {
+				resData.setResponseCode("200");
+				resData.setReponseMsg("Account Details Fetched");
+				resData.setRegistration(accountDetails);
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			resData.setResponseCode("404");
+			resData.setReponseMsg("Account Details Failed");
+		}
+
+		return resData;
+
+	}
+	
+	@PostMapping(value= "/updateAccountDetails")
+	public ResponseData updateAccountDetails(@RequestBody Registration registration) {
+		String msg = null;
+		ResponseData resData = new ResponseData();
+		try {
+			msg = this.registrationService.updateAccountDetails(registration);
+			resData.setResponseCode("200");
+			resData.setReponseMsg("Account Details Updated Successfully");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			resData.setResponseCode("404");
+			resData.setReponseMsg("Account Details Update Failed");
+		}
+		return resData;
 	}
 }
